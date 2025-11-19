@@ -36,4 +36,14 @@ No código, substitua:
 NEWS_API_KEY = 'sua_api_key_aqui'
 
 
+# Como o código funciona
+
+Monta a URL com parâmetros da NewsAPI.
+Envia uma requisição GET com timeout de 10s.
+Converte a resposta JSON.
+Seleciona apenas as 5 notícias mais recentes.
+Exibe de forma formatada.
+Lida com qualquer erro de conexão ou da API.
+
+
 pela sua chave real.
