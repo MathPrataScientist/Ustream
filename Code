@@ -1,0 +1,55 @@
+import requests
+
+NEWS_API_KEY = 'SUA API KEY'
+
+def obter_noticias_cripto():
+    print("📰 Buscando últimas notícias de criptomoedas...")
+
+    url = (
+        f'https://newsapi.org/v2/everything?'
+        f'q=cryptocurrency OR bitcoin OR ethereum&'
+        f'sortBy=publishedAt&'
+        f'language=pt&'
+        f'apiKey={NEWS_API_KEY}'
+    )
+
+    try:
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+
+        if data.get('status') == 'error':
+            print("\n❌ ERRO DA API:")
+            print(f"   Código: {data.get('code')}")
+            print(f"   Mensagem: {data.get('message')}")
+            return
+
+        artigos = data.get('articles', [])[:5]
+
+        if not artigos:
+            print("\nNenhuma notícia encontrada no momento com os critérios definidos.")
+            return
+
+        print("\n" + "=" * 40)
+        print("=== 🚀 Últimas Notícias sobre Criptomoedas ===")
+        print("=" * 40)
+
+        for i, artigo in enumerate(artigos, start=1):
+            titulo = artigo.get('title', 'Título não disponível')
+            fonte = artigo.get('source', {}).get('name', 'Fonte Desconhecida')
+            link = artigo.get('url', '#')
+
+            print(f"{i}. **{titulo}**")
+            print(f"   Fonte: {fonte}")
+            print(f"   Link: {link}\n")
+
+        print("=" * 40)
+
+    except requests.exceptions.RequestException as e:
+        print(f"\n❌ Erro de Conexão: Verifique sua internet ou a URL base da API. Detalhes: {e}")
+    except Exception as e:
+        print(f"\n❌ Erro Inesperado ao obter notícias: {e}")
+
+
+if __name__ == "__main__":
+    obter_noticias_cripto()
